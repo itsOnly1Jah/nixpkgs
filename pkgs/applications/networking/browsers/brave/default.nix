@@ -97,8 +97,8 @@ stdenv.mkDerivation rec {
   version = "1.63.174";
 
   src = fetchurl {
-    url = "https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser_${version}_amd64.deb";
-    hash = "sha256-COy1XwooN0agp5dLDVUAfhpFvgubbClaGrUQ5PFgTJk=";
+    url = if stdenv.hostPlatform.system == "x86_64-linux" then "https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser_${version}_amd64.deb" else "https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser_${version}_arm64.deb";
+    hash = if stdenv.hostPlatform.system == "x86_64-linux" then "sha256-COy1XwooN0agp5dLDVUAfhpFvgubbClaGrUQ5PFgTJk=" else "sha256-yJXPe1j0+W84O1OymaIDX95x0XPwlRfst8HfR5d1bG8=";
   };
 
   dontConfigure = true;
@@ -208,7 +208,7 @@ stdenv.mkDerivation rec {
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     license = licenses.mpl20;
     maintainers = with maintainers; [ uskudnik rht jefflabonte nasirhm buckley310 ];
-    platforms = [ "x86_64-linux" ];
+    platforms = [ "x86_64-linux" "aarch64-linux"];
     mainProgram = "brave";
   };
 }
